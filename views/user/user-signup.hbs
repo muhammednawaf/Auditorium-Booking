@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup - Farook College Auditorium</title>
+    <link rel="stylesheet" href="/stylesheets/user-login-signup.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Create an Account</h1>
+            <p>Join Farook College Auditorium</p>
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            Registration failed. Please check your details.
+        </div>
+
+        <form action="/signup" id="signupForm" method="post">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <i>👤</i>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    required
+                    placeholder="Enter your full name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <i>✉️</i>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    placeholder="Enter your email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i>🔒</i>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Create a strong password"
+                >
+                <span class="password-toggle" onclick="togglePassword()">👁️</span>
+            </div>
+
+
+
+            <button type="submit" class="btn-signup" onclick="handleSignup(event)">
+                Sign Up
+                <span class="loading"></span>
+            </button>
+        </form>
+
+        <div class="login-link">
+            <p>Already have an account? <a href="/login">Log In</a></p>
+        </div>
+    </div>
+
+    <script src="/javascripts/user-login-signup.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{venue}} - Booking Details</title>
+    <link rel="stylesheet" href="/stylesheets/venues.css">
+</head>
+
+<body>
+    <header class="header">
+        <h1>{{venue}}</h1>
+        <a href="/" class="back-button">← Back to All Venues</a>
+    </header>
+
+    <main class="container">
+        <div class="auditorium-details">
+            <div class="image-gallery">
+                
+                <img src="{{image1}}" alt="AVT Auditorium Main" class="main-image">
+                
+                <div class="thumbnail-container">
+                   
+                    <img src="{{image1}}" alt="Thumbnail 1" class="thumbnail">
+                    <img src="{{image2}}" alt="Thumbnail 2" class="thumbnail">
+                    <img src="{{image3}}" alt="Thumbnail 3" class="thumbnail">
+                 
+                </div>
+                
+            </div>
+
+            <div class="info-section">
+                <h2>Venue Details</h2>
+                <ul class="feature-list">
+                    <li>👥 Capacity: {{auditorium.capacity}}</li>
+                    <li>{{auditorium.content_feature1}}</li>
+                    <li>{{auditorium.content_feature2}}</li>
+                    <li>{{auditorium.content_feature3}}</li>
+                    <li>{{auditorium.content_feature4}}</li>
+                    <li>{{auditorium.content_feature5}}</li>
+                    <li>{{auditorium.content_feature6}}</li>
+                </ul>
+
+                <h3>Description</h3>
+                <p>{{auditorium.content_description}}</p>
+            </div>
+        </div>
+
+        <div class="booking-section">
+            <h2>Check Availability & Book</h2>
+
+            <div class="date-picker">
+                <label for="booking-date">Select Date:</label>
+                <input type="date" id="booking-date" required>
+            </div>
+
+            <h3>Available Time Slots</h3>
+<div class="time-slots">
+  {{#each timeSlots}}
+    <div class="time-slot {{#if isBooked}} booked {{else}} available {{/if}}">
+      {{time}}
+    </div>
+  {{/each}}
+</div>
+
+
+            <div class="booking-form">
+                <h3>Book Selected Time Slot</h3>
+                <form action="/booking-form" method="post" id="booking-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" name="department" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-type">Event Type</label>
+                        <input type="text" id="event-type" name="event" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Event Description</label>
+                        <textarea id="description" rows="4" name="description" required></textarea>
+                    </div>
+
+                    <input type="hidden" id="selected-date" name="date">
+                    <input type="hidden" id="selected-time" name="time">
+                    <input type="hidden" id="selected-venue" name="auditorium" value={{venue}}>
+                    <input type="hidden" id="selected-venue" name="userId" value={{userId.id}}>
+
+                    <button type="submit" class="btn" id="">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    {{> user-footer}}
+
+    
+
+ <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/javascripts/venues.js"></script>
+   
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - Farook College Auditorium</title>
+    <link rel="stylesheet" href="/stylesheets/user-account.css">
+
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .features-container input {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+        <h1>Manage Account</h1>
+        <button class="header-logout" onclick="handleLogout(event)">Logout</button>
+    </header>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="container">
+        <div class="admin-grid">
+            <aside class="sidebar" id="sidebar">
+                <ul class="sidebar-menu">
+                    <li><button class="active" onclick="showSection('bookings')">Bookings</button></li>
+                    <li><button onclick="showSection('profile')">Profile</button></li>
+
+                </ul>
+            </aside>
+
+            <section class="main-content">
+                <!-- Bookings Management Section -->
+                <div id="bookings-section">
+                    <h2>Bookings</h2>
+                    <div class="table-container">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Venue</th>
+                                    <th>Event</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingsTableBody">
+                                {{#each bookings}}
+                                <tr>
+                                    <!-- Bookings will be dynamically inserted here -->
+                                    <td>{{this.date}}</td>
+                                    <td>{{this.time}}</td>
+                                    <td>{{this.auditorium}}</td>
+                                    <td>{{this.event}}</td>
+                                    <td data-label="Status" id="status-${booking._id}">
+                                        <span class="status-badge status-${booking.status.toLowerCase()}">
+                                            {{this.payment_status}}
+                                        </span>
+                                    </td>
+                                    <td data-label="Status" id="status-${booking._id}">
+                                        <span class="status-badge status-${booking.status.toLowerCase()}">
+                                            {{this.status}}
+                                        </span>
+                                    </td>
+                                    
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+                <!-- Content Management Section -->
+                <div id="profile-section" style="display: none;">
+                    <h2 class="profile-header">Profile Details</h2>
+                    <div class="profile-container">
+
+                        <div class="profile-details">
+                            <div class="profile-item">
+                                <i class="icon-user"></i>
+                                <div class="item-content">
+                                    <span class="item-label">Full Name</span>
+                                    <span id="displayFullName" class="item-value">{{user.fullName}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-item">
+                                <i class="icon-email"></i>
+                                <div class="item-content">
+                                    <span class="item-label">Email</span>
+                                    <span id="displayEmail" class="item-value">{{user.email}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+        </div>
+    </main>
+
+    {{> user-footer}}
+
+    <script src="/javascripts/user-account.js"></script>
+</body>
+
+</html>
