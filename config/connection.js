@@ -11,7 +11,7 @@ const state = {
 
 // Function to connect to the database
 module.exports.connect = (done) => {
-    const url = 'mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/Auditorium-Bookings';
+    const url = 'mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
     const client = new MongoClient(url, {
         useNewUrlParser: true,
