@@ -1,8 +1,17 @@
-module.exports.connect = (done) => {
+// Import required modules
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const router = express.Router();
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+
+// State object to hold the database connection
+const state = {
+    db: null,
+};
+
+// Function to connect to the database
+module.exports.connect = (done) => {
+    
 const uri = "mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/Auditorium-Bookings?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -28,9 +37,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+};
+
+// Function to get the database instance
 module.exports.get = () => {
     return state.db;
 };
-}
-
-// Import required modules
