@@ -1,44 +1,36 @@
-// Import required modules
-const { MongoClient } = require('mongodb');
+module.exports.connect = (done) => {
 const express = require('express');
 const router = express.Router();
 require('dotenv').config();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-// State object to hold the database connection
-const state = {
-    db: null,
-};
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
-// Function to connect to the database
-module.exports.connect = (done) => {
-    const url = 'mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
-    const client = new MongoClient(url, {
-        useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000,
-        tls: false, // Force TLS
-        tlsAllowInvalidCertificates: true, // Prevent invalid certificates/ Reduce timeout
-      });
-    const dbName = 'Auditorium-Bookings';
-
-    async function main() {
-        try {
-            await client.connect();
-            console.log('Connected successfully to server');
-            state.db = client.db(dbName);
-            done(); // Call done callback after successful connection
-        } catch (error) {
-            console.error(error);
-            console.error("MongoDB Connection Error:", error);
-            done(error); // Call done with error if connection fails
-        }
-    }
-
-    main();
-};
-
-// Function to get the database instance
 module.exports.get = () => {
     return state.db;
 };
+}
+
+// Import required modules
