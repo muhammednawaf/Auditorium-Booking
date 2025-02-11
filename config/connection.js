@@ -28,7 +28,7 @@ module.exports.connect = (done) => {
             done(); // Call done callback after successful connection
         } catch (error) {
             console.error(error);
-            console.error("MongoDB Connection Error:", err);
+            console.error("MongoDB Connection Error:", error);
             done(error); // Call done with error if connection fails
         }
     }
