@@ -14,9 +14,11 @@ module.exports.connect = (done) => {
     const url = 'mongodb://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/Auditorium-Bookings?retryWrites=true&w=majority';
 
     const client = new MongoClient(url, {
+        useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000,
         tls: false, // Force TLS
-        tlsAllowInvalidCertificates: true, // Prevent invalid certificates
-        serverSelectionTimeoutMS: 5000 // Reduce timeout
+        tlsAllowInvalidCertificates: true, // Prevent invalid certificates/ Reduce timeout
       });
     const dbName = 'Auditorium-Bookings';
 
