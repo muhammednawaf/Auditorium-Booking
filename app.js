@@ -52,7 +52,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/uploads", express.static(path.join(__dirname,"uploads")));
 app.use(session({
-  secret: 'nawafsuneer', // Secret key to sign the session ID cookie
+  secret: process.env.SESSION_SECRET, // Secret key to sign the session ID cookie
   resave: false,             // Don't force a session to be saved back to the store
   saveUninitialized: true,   // Save a session that is uninitialized
   cookie: {

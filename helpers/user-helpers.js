@@ -10,8 +10,8 @@ const Razorpay = require('razorpay');
 
 
 var instance = new Razorpay({
-    key_id: 'rzp_test_OBYVbsMPplTq7D',
-    key_secret: 'DhO1dFVKVuTKCzmiaW6uOS1S',
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_SECRET ,
 });
 
 
@@ -217,14 +217,14 @@ module.exports = {
                 const transporter = nodemailer.createTransport({
                     service: "gmail",
                     auth: {
-                        user: 'muhammednawaf.buissness@gmail.com',
-                        pass: 'resf hkhn zzxx grnv'
+                        user: process.env.EMAIL_USER,
+                        pass: process.env.EMAIL_PASS
                     }
                 });
 
 
                 const mailOptions = {
-                    from: 'muhammednawaf.buissness@gmail.com',
+                    from: process.env.EMAIL_USER,
                     to: email,
                     subject: "Password Reset Request",
                     text: `Enter the token to reset your password: ${resetToken}`

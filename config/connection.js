@@ -9,7 +9,7 @@ const state = {
 
 // Function to connect to the database
 module.exports.connect = async (done) => {
-    const uri = process.env.MONGO_URI || "mongodb+srv://muhammednawafbuissness:WEPrNexnl2CNM1Jf@cluster0.cnkil.mongodb.net/Auditorium-Bookings?retryWrites=true&w=majority&appName=Cluster0";
+    const uri = process.env.MONGO_URI;
 
     const client = new MongoClient(uri, {
         serverApi: {
