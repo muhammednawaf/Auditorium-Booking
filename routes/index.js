@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userHelpers = require('../helpers/user-helpers');
+var selectedAuditoriumName = ''
 
 
 
@@ -82,54 +83,75 @@ router.get('/account', isAuthenticated, async function (req, res) {
   }
 });
 
-router.get('/auditorium/:id',isAuthenticated, async (req, res) => {
+router.get('/get-booked-slots',isAuthenticated, async (req, res) => {
   try {
-    const auditoriums = await userHelpers.getAuditorium();
-    const auditoriumId = req.params.id;
-    const selectedAuditorium = auditoriums.find(auditorium => auditorium._id.toString() === auditoriumId);
-    console.log(selectedAuditorium.images[0].url)
-
-    if (!selectedAuditorium) {
-      return res.status(404).send('Auditorium not found');
+    console.log(selectedAuditoriumName)
+    const selectedDate = req.query.date;
+    if (!selectedDate) {
+      return res.status(400).json({ error: 'Date is required' });
     }
 
-    const bookedSlots = await userHelpers.getBookedSlots(selectedAuditorium.name);
+    const bookedSlots = await userHelpers.getBookedSlots(selectedAuditoriumName, selectedDate);
     console.log(bookedSlots)
-
-    const allTimeSlots = [
-      '9:00 AM - 10:00 AM',
-      '10:00 AM - 11:00 AM',
-      '11:00 AM - 12:00 PM',
-      '12:00 PM - 1:00 PM',
-      '2:00 PM - 3:00 PM',
-      '3:00 PM - 4:00 PM'
-    ];
-
-    // Create an array with booking status
-    const timeSlots = allTimeSlots.map(time => ({
-      time,
-      isBooked: bookedSlots.includes(time)
-    }));
-    console.log(timeSlots)
-    console.log(bookedSlots.includes())
-    console.log(bookedSlots)
-
-    res.render('user/venues', {
-      image1: selectedAuditorium.images[0].url,
-      image2: selectedAuditorium.images[1].url,
-      image3: selectedAuditorium.images[2].url,
-      venue: selectedAuditorium.name,
-      auditorium: selectedAuditorium,
-      timeSlots,
-      userId: req.session.user,
-    });
+    
+    res.json({ bookedSlots });
   } catch (error) {
-    console.error('Error fetching auditorium:', error);
-    res.status(500).send('Server Error');
+    console.error('Error fetching booked slots:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 
+router.get('/auditorium/:id', isAuthenticated, async (req, res) => {
+  try {
+      const auditoriums = await userHelpers.getAuditorium();
+      const auditoriumId = req.params.id;
+      const selectedAuditorium = auditoriums.find(auditorium => auditorium._id.toString() === auditoriumId);
+
+      if (!selectedAuditorium) {
+          return res.status(404).send('Auditorium not found');
+      }
+
+      // Default date (current date or empty initially)
+      const selectedDate = req.query.date || null;
+      let bookedSlots = [];
+      selectedAuditoriumName = selectedAuditorium.name
+      console.log(selectedAuditorium.name+""+selectedDate);
+
+      if (selectedDate) {
+          bookedSlots = await userHelpers.getBookedSlots(selectedAuditorium.name, selectedDate);
+      }
+
+      const allTimeSlots = [
+          '9:00 AM - 10:00 AM',
+          '10:00 AM - 11:00 AM',
+          '11:00 AM - 12:00 PM',
+          '12:00 PM - 1:00 PM',
+          '2:00 PM - 3:00 PM',
+          '3:00 PM - 4:00 PM'
+      ];
+
+      // Create an array with booking status
+      const timeSlots = allTimeSlots.map(time => ({
+          time,
+          isBooked: bookedSlots.includes(time)
+      }));
+
+      res.render('user/venues', {
+          image1: selectedAuditorium.images[0].url,
+          image2: selectedAuditorium.images[1].url,
+          image3: selectedAuditorium.images[2].url,
+          venue: selectedAuditorium.name,
+          auditorium: selectedAuditorium,
+          timeSlots,
+          selectedDate,
+          userId: req.session.user,
+      });
+  } catch (error) {
+      console.error('Error fetching auditorium:', error);
+      res.status(500).send('Server Error');
+  }
+});
 
 
 

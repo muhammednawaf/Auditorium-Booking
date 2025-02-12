@@ -199,7 +199,7 @@ module.exports = {
     addAdmin(details) {
         return new Promise(async (resolve, reject) => {
             try {
-                const { name, email, phone, username, password } = details;
+                const { id, name, email, phone, username, password } = details;
 
                 // Check if email already exists
                 const existingAdmin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ email });
@@ -221,6 +221,7 @@ module.exports = {
                     password,
                     password: hashedPassword,
                     role: "admin",
+                    'auditorium-in-charge': id,
                     createdAt: new Date(),
 
                 }
@@ -367,7 +368,57 @@ module.exports = {
 
 
 
+    },
+    async getUnassignedAuditoriums() {
+        try {
+            const allAuditoriums = await db.get().collection(collection.AUDITORIUM_COLLECTION).find({}).toArray();
+            console.log("All Auditoriums:", allAuditoriums);
+    
+            const assignedAuditoriums = await db.get().collection(collection.ADMIN_COLLECTION)
+                .find({ "auditorium-in-charge": { $exists: true } })
+                .toArray();
+            console.log("Assigned Auditoriums:", assignedAuditoriums);
+    
+            const assignedNames = assignedAuditoriums.map(admin => admin["auditorium-in-charge"]);
+            console.log("Assigned Names:", assignedNames);
+    
+            const unassignedAuditoriums = allAuditoriums
+                .filter(auditorium => !assignedNames.includes(auditorium.name))
+                .map(auditorium => ({ id: auditorium._id, name: auditorium.name }));
+    
+            console.log("Unassigned Auditoriums:", unassignedAuditoriums);
+    
+            return unassignedAuditoriums;
+        } catch (error) {
+            console.error("Error fetching unassigned auditoriums:", error);
+            return [];
+        }
+    },
+    getAdminBookings(adminId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Find the admin in the ADMIN_COLLECTION
+                const admin = await db.get().collection(collection.ADMIN_COLLECTION)
+                    .findOne({ _id: new ObjectId(adminId) });
+    
+                if (!admin || !admin["auditorium-in-charge"]) {
+                    return reject("Admin has no assigned auditorium.");
+                }
+    
+                // Fetch bookings only for the auditorium assigned to the admin
+                const bookings = await db.get().collection(collection.BOOKING_COLLECTION)
+                    .find({ auditorium: admin["auditorium-in-charge"] })
+                    .toArray();
+    
+                resolve(bookings);
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
+    
+    
+    
 
 
 

@@ -44,46 +44,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial fetch on page load
     fetchBookings();
-/*
-    // Event Listener for Approve and Reject Buttons
-    bookingsTableBody.addEventListener('click', (event) => {
-        if (event.target.classList.contains('btn-approve') || event.target.classList.contains('btn-reject')) {
-            const bookingId = event.target.getAttribute('data-id');
-            const newStatus = event.target.classList.contains('btn-approve') ? 'approved' : 'rejected';
 
-            // Send AJAX request to update booking status
-            fetch(`/admin/bookings/update/${bookingId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: newStatus })
+    function fetchAdminBookings() {
+        fetch('/admin/admin-bookings')
+            .then(response => response.json())
+            .then(data => {
+                bookingsTableBody.innerHTML = data.map(booking => {
+                    const status = booking.status.toLowerCase();
+                    const payment_status = booking.payment_status.toLowerCase();
+                    const buttonState = status === 'pending' ? '' : 'disabled';
+                    const buttonClass = status === 'pending' ? '' : 'disabled-btn';
+                    return `
+                        <tr id="booking-${booking._id}">
+                            <td>${new Date(booking.date).toLocaleDateString()}</td>
+                            <td>${booking.time}</td>
+                            <td>${booking.auditorium}</td>
+                            <td>${booking.name}</td>
+                            <td>${booking.email}</td>
+                            <td>${booking.phone}</td>
+                            <td>${booking.department}</td>
+                            <td>${booking.event}</td>
+                            <td id="payment-status-${booking._id}">
+                                <span class="status-badge status-${payment_status}">
+                                   ${booking.payment_status.charAt(0).toUpperCase() + booking.payment_status.slice(1)}
+                                </span>
+                            </td>
+                            <td id="status-${booking._id}">
+                                <span class="status-badge status-${status}">
+                                   ${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             })
-                .then(response => response.json())
-                .then(updatedBooking => {
-                    // Update the status in UI instantly
-                    document.getElementById(`status-${bookingId}`).innerHTML = `
-                    <span class="status-badge status-${updatedBooking.status.toLowerCase()}">
-                        ${updatedBooking.status.charAt(0).toUpperCase() + updatedBooking.status.slice(1)}
-                    </span>
-                `;
+            .catch(error => console.error('Error fetching bookings:', error));
+    }
 
-                    // Disable buttons after action
-                    event.target.parentElement.innerHTML = `
-                    <button class="btn btn-approve disabled-btn" disabled>Approve</button>
-                    <button class="btn btn-reject disabled-btn" disabled>Reject</button>
-                `;
-                })
-                .catch(error => console.error('Error updating booking:', error));
-        }
-    });*/
+    // Initial fetch on page load
+    fetchAdminBookings();
+
 });
 
 async function handleLogout(event) {
     event.preventDefault();
 
     try {
-        const response = await fetch("/logout", {
+        const response = await fetch("/admin/logout", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -624,7 +631,8 @@ document.getElementById("addAdmin").addEventListener("submit", async function (e
 
         if (response.ok) {
             showToast("User registered successfully", "success");
-            this.reset(); // Clear the form after success
+            location.reload();
+ // Clear the form after success
         } else {
             showToast(result.error, "error");
         }
@@ -656,3 +664,8 @@ function validatePassword(password) {
     }
     return true;
 }
+
+document.getElementById('auditoriumName').addEventListener('input', function () {
+    this.value = this.value.replace(/\s/g, '');
+})
+

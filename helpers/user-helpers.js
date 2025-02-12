@@ -39,6 +39,7 @@ module.exports = {
             db.get().collection(collection.BOOKING_COLLECTION).insertOne(booking).then(() => {
                 resolve(booking);
             });
+            console.log(auditorium)
 
         })
     },
@@ -128,21 +129,33 @@ module.exports = {
             }
         });
     },
-    getBookedSlots(auditoriumName) {
+    async getBookedSlots(auditoriumName, selectedDate) {
         return new Promise(async (resolve, reject) => {
             try {
+                console.log("🔍 Checking bookings for:", auditoriumName, selectedDate);
+    
                 const bookings = await db.get()
                     .collection(collection.BOOKING_COLLECTION)
-                    .find({ auditorium: auditoriumName, status: { $ne: 'Rejected' } }) // Exclude Rejected
+                    .find({
+                        auditorium: auditoriumName,
+                        date: selectedDate, // Direct string match instead of date range
+                        status: { $ne: 'Rejected' }
+                    })
                     .toArray();
-
-                const bookedTimes = bookings.map(booking => booking.time); // Extract booked time slots
+    
+                console.log("📅 Retrieved bookings:", bookings);
+    
+                const bookedTimes = bookings.map(booking => booking.time);
+                console.log("⏳ Booked slots:", bookedTimes);
+    
                 resolve(bookedTimes);
             } catch (error) {
+                console.error("❌ Error fetching booked slots:", error);
                 reject(error);
             }
         });
-    },
+    }
+,    
 
     resetPassword(details) {
         return new Promise(async (resolve, reject) => {

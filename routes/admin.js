@@ -168,9 +168,15 @@ router.get('/bookings', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch bookings' });
     }
   }
+
+
+});
+
+router.get('/admin-bookings', async (req, res) => {
+
   if (req.session.admin && req.session.admin.role === "admin") {
     try {
-      const bookings = await adminHelpers.getBookings();
+      const bookings = await adminHelpers.getAdminBookings(req.session.admin.id);
       res.status(200).json(bookings);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -181,7 +187,6 @@ router.get('/bookings', async (req, res) => {
 
 
 });
-
 
 
 router.put('/bookings/:id/approve', async (req, res) => {
@@ -208,8 +213,11 @@ router.put('/bookings/:id/reject', async (req, res) => {
 
 
 
-router.get('/super-admin-dashboard',isSuperAdmin, (req, res) => {
+router.get('/super-admin-dashboard',isSuperAdmin, async(req, res) => {
+  let unassigned = await adminHelpers.getUnassignedAuditoriums();
+  console.log(unassigned);
   res.render('admin/super-admin-dashboard', {
+    unassignedAuditorium: unassigned,
     auditoriums: res.locals.auditoriums,
     admins: res.locals.admins,
     admin: req.session.admin

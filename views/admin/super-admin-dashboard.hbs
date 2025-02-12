@@ -270,6 +270,19 @@
                 <div id="addAdmin-section" style="display: none;">
                     <h2>Add Admin</h2>
                     <form action="/admin/add-admin" id="addAdmin" method="post">
+
+                        <div class="form-group">
+                            <label for="auditoriumSelect">Select Auditorium In Charge</label>
+                            <select id="auditoriumSelect" onchange="loadAuditoriumDetails(this.value)" name="id"
+                                required>
+                                <option value="">Select an Auditorium</option>
+                                {{#each unassignedAuditorium}}
+                                <option value="{{this.name}}">{{this.name}}</option>
+                                {{/each}}
+                                <!-- Options will be dynamically populated -->
+                            </select>
+
+                        </div>
                         <div class="form-group">
                             <label>Name</label>
                             <div class="features-container">
@@ -313,6 +326,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
+                                    <th>In Charge</th>
                                     <th>Username</th>
                                     <th>Actions</th>
                                 </tr>
@@ -324,6 +338,7 @@
                                 <td>{{this.name}}</td>
                                 <td>{{this.email}}</td>
                                 <td>{{this.phone}}</td>
+                                <td>{{this.auditorium-in-charge}}</td>
                                 <td>{{this.username}}</td>
                                 <td>
                                     <button class="btn btn-delete" data-id="{{this._id}}">Delete</button>

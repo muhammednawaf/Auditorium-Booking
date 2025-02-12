@@ -1,22 +1,3 @@
-// Handle date selection
-const dateInput = document.getElementById('booking-date');
-const today = new Date().toISOString().split('T')[0];
-dateInput.setAttribute('min', today);
-
-// Handle time slot selection
-const timeSlots = document.querySelectorAll('.time-slot');
-timeSlots.forEach(slot => {
-    if (!slot.classList.contains('booked')) {
-        slot.addEventListener('click', () => {
-            timeSlots.forEach(s => s.style.background = '');
-            if (!slot.classList.contains('booked')) {
-                slot.style.background = '#e5edff';
-            }
-        });
-    }
-});
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById('booking-date');
@@ -24,19 +5,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenDateInput = document.getElementById('selected-date');
     const hiddenTimeInput = document.getElementById('selected-time');
 
-    // When a date is selected, update the hidden date field
+    let isDateSelected = false; // Track if a date is selected
+
+    // Listen for date selection
     dateInput.addEventListener('change', () => {
-        hiddenDateInput.value = dateInput.value;
+        const selectedDate = dateInput.value;
+        hiddenDateInput.value = selectedDate;
+        isDateSelected = true; // Mark date as selected
+
+        // Fetch booked slots for the selected date
+        fetch(`/get-booked-slots?date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                updateBookedSlots(data.bookedSlots);
+            })
+            .catch(error => console.error('Error fetching booked slots:', error));
     });
 
-    // When a time slot is selected, update the hidden time field
+    function updateBookedSlots(bookedSlots) {
+        timeSlots.forEach(slot => {
+            const slotTime = slot.textContent.trim();
+
+            if (bookedSlots.includes(slotTime)) {
+                slot.classList.add('booked');
+                slot.classList.remove('available');
+                slot.disabled = true;
+            } else {
+                slot.classList.remove('booked');
+                slot.classList.add('available');
+                slot.disabled = false;
+            }
+        });
+    }
+
+    // Handle time slot selection with alert
     timeSlots.forEach(timeSlot => {
         timeSlot.addEventListener('click', () => {
-            if (timeSlot.classList.contains('available')) {
-                console.log('Selected Time Slot:', timeSlot.textContent.trim()); // Check if time is selected
-                hiddenTimeInput.value = timeSlot.textContent.trim();
+            if (!isDateSelected) {
+                showMessage("⚠️ Please select a date.", "error");
+                return;
+            }
 
-                // Highlight the selected time slot
+            if (timeSlot.classList.contains('available')) {
+                hiddenTimeInput.value = timeSlot.textContent.trim();
                 timeSlots.forEach(slot => slot.classList.remove('selected'));
                 timeSlot.classList.add('selected');
             }
@@ -46,24 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-// Handle form submission
-/*document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Basic validation
-    const selectedSlots = document.querySelector('.time-slot[style*="background"]');
-    if (!selectedSlots) {
-        alert('Please select a time slot');
-        return;
-    }
-
-    // Show success message
-    alert('Booking request submitted successfully! We will contact you shortly.');
-    this.reset();
-});
-*/
 // Get references to the main image and all thumbnails
 const mainImage = document.querySelector('.main-image');
 const thumbnails = document.querySelectorAll('.thumbnail');
