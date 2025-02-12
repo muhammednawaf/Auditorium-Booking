@@ -141,7 +141,7 @@ async function handleLogin(event) {
             showNotification("Login Successfully");
             setTimeout(() => {
                 window.location.href = data.redirect;
-            }, 1000);
+            }, 500);
         } else {
             showError(data.error);
         }
@@ -188,7 +188,7 @@ async function handleSignup(event) {
             showNotification(data.message);
             setTimeout(() => {
                 window.location.href = '/login';
-            }, 1000);
+            }, 500);
         } else {
             showError(data.error);
         }

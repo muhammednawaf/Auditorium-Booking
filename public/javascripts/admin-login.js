@@ -20,7 +20,7 @@
             showNotification("Login Successfull!")
             setTimeout(() => {
                 window.location.href = data.redirect;
-            }, 1000);
+            }, 500);
             // Redirect to homepage
         } else {
             document.getElementById("errorMessage").innerText = data.error;
