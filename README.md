@@ -153,7 +153,7 @@ The application will be accessible at [http://localhost:3000](http://localhost:3
 
 ## 🌐 Live Demo
 
-👉 **[Click here to view the live application](http://farook-env.eba-inn2thh6.eu-north-1.elasticbeanstalk.com/)**
+👉 **[Click here to view the live application](https://auditorium-booking-hosting.onrender.com/)**
 
 ---
 
