@@ -12,6 +12,7 @@ This is a comprehensive Auditorium Booking application designed to simplify the 
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Admin Panel](#admin-panel)
+- [Super Admin Panel](#super-admin-panel)
 - [User Management](#user-management)
 - [Security](#security)
 - [Contributing](#contributing)
@@ -99,7 +100,7 @@ The application will be accessible at [http://localhost:3000](http://localhost:3
 - **Book Auditorium**: Select date and time, complete booking, and pay online.
 - **My Bookings**: View, track, or cancel your bookings.
 - **Admin Panel**: Approve or reject booking requests for assigned auditoriums.
-- **Super Admin Panel**: Manage all auditoriums and admins, configure pricing, and oversee system-wide bookings.
+- **Super Admin Panel**: Manage all auditoriums, bookings, and admin accounts.
 
 ---
 
@@ -115,9 +116,19 @@ The application will be accessible at [http://localhost:3000](http://localhost:3
 ## 🛠️ Admin Panel
 
 - Access via: `/admin`
-- Admins can view bookings only for auditoriums they manage.
-- Approve or reject requests and track payment statuses.
-- Super admins have full access to all bookings, all auditoriums, and admin account management.
+- Admins can only view and manage bookings for auditoriums they oversee.
+- Approve or reject booking requests.
+- View payment statuses and booking details.
+
+---
+
+## 🏆 Super Admin Panel
+
+- Access full system-wide dashboard.
+- Create, update, and delete auditoriums (configure features and pricing).
+- Approve or reject bookings across all auditoriums.
+- View all booking details and payment statuses (verified, failed).
+- Manage all admin accounts (add, update, delete credentials).
 
 ---
 
@@ -127,7 +138,7 @@ The application will be accessible at [http://localhost:3000](http://localhost:3
   - Register, log in, and manage their profile.
   - Book auditoriums and view booking history.
   - Reset passwords via email verification (Nodemailer).
-- Super admins can manage (add, edit, delete) admin accounts and control system-level access.
+- Super admins can manage all admin accounts and monitor system activity.
 
 ---
 
@@ -135,8 +146,8 @@ The application will be accessible at [http://localhost:3000](http://localhost:3
 
 - Passwords securely hashed using bcrypt.
 - Session & cookie-based authentication for protected routes.
-- Email verification for password reset using Nodemailer.
-- Razorpay integration for verified payments with status tracking.
+- Email verification for password reset via Nodemailer.
+- Razorpay integration for verified payments and status tracking.
 
 ---
 
