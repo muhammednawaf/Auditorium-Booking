@@ -1,144 +1,154 @@
-
-````markdown
 # 🎟️ Auditorium Booking System
 
-A robust, full-stack web application for managing auditorium bookings with secure payments, advanced role-based access, and integrated email notifications.
+This is a comprehensive Auditorium Booking application designed to simplify the process of reserving auditoriums for events, seminars, and meetings. Built using modern web technologies, it supports secure authentication, real-time booking management, role-based access, and payment integration.
 
 ---
 
-## 🚀 Tech Stack
+## 📄 Table of Contents
 
-- **Backend:** Node.js, Express.js
-- **Frontend:** EJS / Handlebars, Bootstrap
-- **Database:** MongoDB
-- **Payments:** Razorpay
-- **Authentication & Security:** bcrypt, sessions, cookies, email verification
-- **Email Service:** Nodemailer
-
----
-
-## ✨ Features
-
-### 👤 **User**
-
-- View and filter available auditoriums for booking.
-- Submit booking requests and pay securely via Razorpay.
-- View booking status (approved, pending, rejected).
-- Access "My Account" section with profile info, booking history, and logout.
-- Reset password using a secure email verification flow (via Nodemailer).
-- Receive email notifications for booking updates and password resets.
-- Session and cookie management for secure access.
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Admin Panel](#admin-panel)
+- [User Management](#user-management)
+- [Security](#security)
+- [Contributing](#contributing)
+- [Contact](#contact)
 
 ---
 
-### 🛡️ **Admin**
+## ✅ Features
 
-- Manage assigned auditoriums and related booking requests.
-- Approve or reject bookings for their assigned auditoriums.
-- View booking details and payment statuses (verified, failed).
-- Cannot manage other admins or modify auditorium settings.
-
----
-
-### 🏆 **Super Admin**
-
-- Create, update, and delete auditoriums (configure features and pricing).
-- Manage all booking requests across all auditoriums.
-- Approve or reject any booking, and view global booking/payment details.
-- Create, update, and remove admins with login credentials.
-- Manage all admins and monitor system-wide activity.
+- 🎟️ **Book Auditorium**: Users can view available auditoriums, filter by features and pricing, and book slots.
+- 💳 **Secure Payments**: Integrated with Razorpay for seamless online payments.
+- 🔐 **Authentication & Authorization**: Secure login, session, and cookie management for all user roles.
+- 🔁 **Forgot Password**: Email verification and password reset functionality using Nodemailer.
+- 🧾 **Booking Status Tracking**: Users can track booking status (pending, approved, rejected).
+- 🧑‍💼 **Role-Based Access**:
+  - **Users**: Book auditoriums, manage profile, view and cancel bookings, reset password.
+  - **Admins**: Manage assigned auditorium bookings, approve/reject bookings, view payment statuses.
+  - **Super Admin**: Create, update, and delete auditoriums; set pricing and features; manage all bookings across auditoriums; approve/reject bookings; manage admin accounts (create, update, delete); view detailed payment and booking info.
+- 📊 **Admin & Super Admin Dashboards**: Enhanced tables using DataTables for sorting, searching, and pagination.
+- 🗂️ **Booking History**: Users can view past and upcoming bookings.
 
 ---
 
-## 💻 Installation
+## 💻 Technologies Used
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/muhammednawaf/Auditorium-Booking.git
-   cd Auditorium-Booking
-````
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**
-
-   Create a `.env` file in the root directory:
-
-   ```env
-   PORT=3000
-   MONGODB_URI=mongodb://localhost:27017/auditorium_booking
-   SESSION_SECRET=your_session_secret
-   RAZORPAY_KEY_ID=your_razorpay_key_id
-   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-   EMAIL_USER=your_email_address
-   EMAIL_PASS=your_email_password_or_app_password
-   ```
-
-4. **Start the application**
-
-   ```bash
-   npm start
-   ```
-
-Access the app at [http://localhost:3000](http://localhost:3000).
+- **Node.js**: Server-side runtime environment.
+- **Express.js**: Web framework for building backend APIs.
+- **MongoDB**: NoSQL database to store user, booking, and auditorium data.
+- **Handlebars / EJS**: Templating engines for dynamic rendering.
+- **Bootstrap**: Frontend framework for responsive UI design.
+- **jQuery & AJAX**: For dynamic front-end interactions and smooth UX.
+- **Razorpay**: Payment gateway for online transactions.
+- **Nodemailer**: Email service for password resets and booking notifications.
+- **bcrypt**: Secure password hashing.
+- **Session & Cookies**: Manage secure sessions for authentication.
+- **DataTables**: Enhanced table functionalities for admin dashboards.
 
 ---
 
-## ⚙️ Usage
+## ⚙️ Installation
 
-* **Users:**
+1. **Clone the repository**:
 
-  * Explore and book auditoriums.
-  * Make payments via Razorpay.
-  * Receive email confirmations and status updates.
-  * Manage profile and reset passwords with secure email verification.
+    ```bash
+    git clone https://github.com/muhammednawaf/Auditorium-Booking.git
+    ```
 
-* **Admins:**
+2. **Navigate to the project directory**:
 
-  * Approve or reject booking requests for assigned auditoriums.
-  * Monitor payment statuses and view detailed booking information.
+    ```bash
+    cd Auditorium-Booking
+    ```
 
-* **Super Admin:**
+3. **Install dependencies**:
 
-  * Manage all auditoriums and bookings.
-  * Add, update, and remove admins.
-  * Access global booking and payment information.
+    ```bash
+    npm install
+    ```
+
+4. **Create a `.env` file** and add the following:
+
+    ```env
+    PORT=3000
+    MONGODB_URI=mongodb://localhost:27017/auditorium_booking
+    SESSION_SECRET=your_session_secret
+    RAZORPAY_KEY_ID=your_razorpay_key_id
+    RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+    EMAIL_USER=your_email_address
+    EMAIL_PASS=your_email_password_or_app_password
+    ```
+
+5. **Start the application**:
+
+    ```bash
+    npm start
+    ```
+
+The application will be accessible at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🚀 Usage
+
+- **Homepage**: Browse available auditoriums and view details.
+- **Book Auditorium**: Select date and time, complete booking, and pay online.
+- **My Bookings**: View, track, or cancel your bookings.
+- **Admin Panel**: Approve or reject booking requests for assigned auditoriums.
+- **Super Admin Panel**: Manage all auditoriums and admins, configure pricing, and oversee system-wide bookings.
+
+---
+
+## ⚙️ Configuration
+
+- **Session Management**: Configure `SESSION_SECRET` for secure sessions.
+- **Database Connection**: Update `MONGODB_URI` as needed.
+- **Razorpay**: Provide your `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET`.
+- **Nodemailer**: Set up `EMAIL_USER` and `EMAIL_PASS` for sending verification and reset emails.
+
+---
+
+## 🛠️ Admin Panel
+
+- Access via: `/admin`
+- Admins can view bookings only for auditoriums they manage.
+- Approve or reject requests and track payment statuses.
+- Super admins have full access to all bookings, all auditoriums, and admin account management.
+
+---
+
+## 👥 User Management
+
+- Users can:
+  - Register, log in, and manage their profile.
+  - Book auditoriums and view booking history.
+  - Reset passwords via email verification (Nodemailer).
+- Super admins can manage (add, edit, delete) admin accounts and control system-level access.
 
 ---
 
 ## 🛡️ Security
 
-* Passwords hashed using bcrypt for secure storage.
-* Session and cookie-based authentication.
-* Secure email-based password reset via Nodemailer.
-* Payment status verified using Razorpay APIs and callbacks.
-
----
-
-## 💌 Email Integration
-
-* Integrated **Nodemailer** for sending emails to users:
-
-  * Password reset links.
-  * Booking status updates and confirmations.
+- Passwords securely hashed using bcrypt.
+- Session & cookie-based authentication for protected routes.
+- Email verification for password reset using Nodemailer.
+- Razorpay integration for verified payments with status tracking.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-Please fork the repository, create a new feature branch, and submit a pull request.
+Contributions are welcome!  
+Please fork the repository, create a new branch for your feature or fix, and submit a pull request.
 
 ---
 
 ## 📬 Contact
 
-For any questions or support, please reach out to **[nawafsuneer@gmail.com](mailto:nawafsuneer@gmail.com)**.
+For questions or support, please contact **nawafsuneer@gmail.com**.
 
 ---
-
